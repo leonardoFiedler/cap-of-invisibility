@@ -20,8 +20,7 @@ if os.path.exists(FILE_NAME):
 
 while(True):
     ret, frame = vid.read()
-    
-    # cv2.imshow('frame', frame)
+
     if base_file is not None:
         # Let's verify the cape here
         frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -44,28 +43,14 @@ while(True):
         if max_area > 100000:
             mask = np.zeros((480, 640, 3), dtype=np.uint8)
             cv2.drawContours(mask, [cnt], -1, (255, 255, 255), -1)
-            # cv2.imshow('Mask', mask)
-            # cv2.waitKey(0)
             cv2.drawContours(frame, [cnt], -1, (0, 0, 0), -1)
-            # cv2.imshow('Frame', frame)
-            # cv2.waitKey(0)
-
             roi = cv2.bitwise_and(base_file, mask)
-
-            # cv2.imshow('roi', roi)
-            # cv2.waitKey(0)
-
             frame_final = cv2.bitwise_xor(roi, frame, mask=None)
 
             cv2.imshow('frame', frame_final)
-            # cv2.waitKey(0)
-            
             print('Max area {0}'.format(max_area))
-            
-            # cv2.imshow('frame', res)
         else:
             cv2.imshow('frame', frame)
-
     else:
         # If pressed "C" key, then save the image to disk
         if cv2.waitKey(1) & 0xFF == ord('c'):
